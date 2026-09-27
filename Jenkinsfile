@@ -23,6 +23,13 @@ pipeline {
             }
         }
 
+        stage('Docker Check') {
+            steps {
+                bat 'where docker'
+                bat 'docker --version'
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 bat 'docker build -t suprita123/expense-tracker:%BUILD_NUMBER% .'
