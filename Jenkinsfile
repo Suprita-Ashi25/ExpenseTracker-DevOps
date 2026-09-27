@@ -23,16 +23,22 @@ pipeline {
             }
         }
 
-        stage('Docker Check') {
-            steps {
-                bat 'where docker'
-                bat 'docker --version'
-            }
-        }
-
         stage('Docker Build') {
             steps {
                 bat 'docker build -t suprita123/expense-tracker:%BUILD_NUMBER% .'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat 'echo %DOCKER_PASS% | docker login --username %DOCKER_USER% --password-stdin'
+                    bat 'docker push suprita123/expense-tracker:%BUILD_NUMBER%'
+                }
             }
         }
     }
