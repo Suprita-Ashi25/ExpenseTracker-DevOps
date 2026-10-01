@@ -36,7 +36,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat 'echo %DOCKER_PASS% | docker login --username %DOCKER_USER% --password-stdin'
+                    bat 'docker login -u "%DOCKER_USER%" -p "%DOCKER_PASS%"'
                     bat 'docker push suprita123/expense-tracker:%BUILD_NUMBER%'
                 }
             }
